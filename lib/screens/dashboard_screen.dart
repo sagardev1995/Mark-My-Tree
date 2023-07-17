@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'login_screen.dart';
-import 'pending_screen.dart';
+import 'pending_applications_screen.dart';
 
 class HomePage extends StatelessWidget {
   @override

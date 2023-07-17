@@ -1,7 +1,12 @@
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
+import 'package:my_first_app/app_style.dart';
 
+/*
+    This class configures the splash screen for our app .
+    It is typically displayed for a brief period of time before the main user interface of the application is shown.   
+*/
 class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -21,7 +26,7 @@ class SplashScreen extends StatelessWidget {
               "MARK MY TREE",
               style: TextStyle(
                 fontSize: 35,
-                color: Color(0xFF0AA034),
+                color: kPrimaryColorLight,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -30,7 +35,7 @@ class SplashScreen extends StatelessWidget {
               "Forest Department",
               style: TextStyle(
                 fontSize: 20,
-                color: Color(0xFF0AA034),
+                color: kPrimaryColorLight,
               ),
             ),
             const SizedBox(height: 10),
@@ -38,7 +43,7 @@ class SplashScreen extends StatelessWidget {
               "Government of Sikkim",
               style: TextStyle(
                 fontSize: 20,
-                color: Color(0xFF0AA034),
+                color: kPrimaryColorLight,
               ),
             ),
           ],

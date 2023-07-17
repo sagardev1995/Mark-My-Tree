@@ -1,10 +1,11 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:developer';
 import 'package:intl/intl.dart';
+import 'package:my_first_app/app_style.dart';
 
 class PendingApps extends StatefulWidget {
   @override
@@ -77,26 +78,29 @@ class _PendingAppsState extends State<PendingApps> {
               height: 70,
             ),
             const SizedBox(width: 12),
-            const Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Text(
-                      '           अंकन आदेश आवेदन पोर्टल',
-                      style: TextStyle(fontSize: 17),
+            SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: const Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        '           अंकन आदेश आवेदन पोर्टल',
+                        style: TextStyle(fontSize: 17),
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 2),
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      '   MARKING ORDER APPLICATION',
-                      style: TextStyle(fontSize: 16),
+                    SizedBox(height: 2),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        '   MARKING ORDER APPLICATION',
+                        style: TextStyle(fontSize: 16),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             const SizedBox(width: 8),
@@ -126,51 +130,51 @@ class _PendingAppsState extends State<PendingApps> {
                   ),
                 ),
                 Expanded(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: DataTable(
-                      columns: const [
-                        DataColumn(label: Text('ID')),
-                        DataColumn(label: Text('NAME')),
-                        DataColumn(label: Text('DATE')),
-                        DataColumn(label: Text('PENDING WITH')),
-                        DataColumn(label: Text('ACTION')),
-                      ],
-                      rows: applicationData.map(
-                        (data) {
-                          return DataRow(
-                            cells: [
-                              DataCell(Text(data.id.toString())),
-                              DataCell(Text(data.name)),
-                              DataCell(Text(data.formattedDate)),
-                              DataCell(Text(data.pendingWith)),
-                              DataCell(Row(
-                                children: [
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      // Handle view button pressed
-                                    },
-                                    child: Text('View'),
-                                  ),
-                                  SizedBox(width: 10),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      // Handle verify button pressed
-                                    },
-                                    child: Text(
-                                      'Verify',
-                                      style: TextStyle(color: Colors.white),
+                  child: SafeArea(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: DataTable(
+                        columns: const [
+                          DataColumn(label: Text('ID')),
+                          DataColumn(label: Text('NAME')),
+                          DataColumn(label: Text('DATE')),
+                          DataColumn(label: Text('PENDING WITH')),
+                          DataColumn(label: Text('ACTION')),
+                        ],
+                        rows: applicationData.map(
+                          (data) {
+                            return DataRow(
+                              cells: [
+                                DataCell(Text(data.id.toString())),
+                                DataCell(Text(data.name)),
+                                DataCell(Text(data.formattedDate)),
+                                DataCell(Text(data.pendingWith)),
+                                DataCell(Row(
+                                  children: [
+                                    ElevatedButton(
+                                      onPressed: () {},
+                                      child: Text('View'),
                                     ),
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Color(0xFF0AA034),
+                                    SizedBox(width: 10),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        // Handle verify button pressed
+                                      },
+                                      child: Text(
+                                        'Verify',
+                                        style: TextStyle(color: kTextColor),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Color(0xFF0AA034),
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              )),
-                            ],
-                          );
-                        },
-                      ).toList(),
+                                  ],
+                                )),
+                              ],
+                            );
+                          },
+                        ).toList(),
+                      ),
                     ),
                   ),
                 ),

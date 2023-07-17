@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:developer';
-import 'home_page.dart';
+import 'dashboard_screen.dart';
+import 'package:my_first_app/app_style.dart';
 
 TextEditingController usernameController = TextEditingController();
 TextEditingController passwordController = TextEditingController();
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
                 'Username',
                 style: TextStyle(
                   fontSize: 19,
-                  color: Color(0xFF0AA034),
+                  color: kPrimaryColorLight,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -46,12 +47,12 @@ class MyApp extends StatelessWidget {
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     borderSide:
-                        BorderSide(color: Color(0xFF0AA034), width: 1.5),
+                        BorderSide(color: kPrimaryColorLight, width: 1.5),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     borderSide:
-                        BorderSide(color: Color(0xFF0AA034), width: 2.0),
+                        BorderSide(color: kPrimaryColorLight, width: 2.0),
                   ),
                   hintText: 'Enter your username',
                   hintStyle: TextStyle(
@@ -67,7 +68,7 @@ class MyApp extends StatelessWidget {
                 'Password',
                 style: TextStyle(
                   fontSize: 19,
-                  color: Color(0xFF0AA034),
+                  color: kPrimaryColorLight,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -81,12 +82,12 @@ class MyApp extends StatelessWidget {
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     borderSide:
-                        BorderSide(color: Color(0xFF0AA034), width: 1.5),
+                        BorderSide(color: kPrimaryColorLight, width: 1.5),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     borderSide:
-                        BorderSide(color: Color(0xFF0AA034), width: 2.0),
+                        BorderSide(color: kPrimaryColorLight, width: 2.0),
                   ),
                   hintText: 'Enter your password',
                   hintStyle: TextStyle(
@@ -103,7 +104,7 @@ class MyApp extends StatelessWidget {
                 height: 50,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.0),
-                  color: Color(0xFF0AA034),
+                  color: kPrimaryColorLight,
                 ),
                 child: TextButton(
                   onPressed: () {
@@ -120,7 +121,7 @@ class MyApp extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-                    backgroundColor: Color(0xFF0AA034),
+                    backgroundColor: kPrimaryColorLight,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 20,
                       vertical: 10,
@@ -132,7 +133,7 @@ class MyApp extends StatelessWidget {
                     'LOGIN',
                     style: TextStyle(
                       fontSize: 18,
-                      color: Colors.white,
+                      color: kTextColor,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
