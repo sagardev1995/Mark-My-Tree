@@ -1,61 +1,21 @@
 // ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:my_first_app/app_style.dart';
 import 'login_screen.dart';
 import 'pending_applications_screen.dart';
+import 'package:my_first_app/widgets/custom_appbar.dart';
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: const Color(0xFF41aa5f),
-        toolbarHeight: 100,
-        title: Row(
-          children: [
-            Image.asset(
-              'assets/images/appbar-img-modified.png',
-              width: 50,
-              height: 70,
-            ),
-            const SizedBox(width: 12),
-            const Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Text(
-                      '           अंकन आदेश आवेदन पोर्टल',
-                      style: TextStyle(fontSize: 17),
-                    ),
-                  ),
-                  SizedBox(height: 2),
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      '   MARKING ORDER APPLICATION',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(width: 8),
-            Image.asset(
-              'assets/images/login-img.png',
-              width: 60,
-              height: 60,
-            ),
-          ],
-        ),
-      ),
+      appBar: CustomAppBar(),
       body: Center(
         child: Column(
           children: [
             Container(
-              color: const Color(0xFFaae7bb),
+              color: kLightBgColor,
               padding: const EdgeInsets.all(3),
               child: Center(
                 child: Row(
@@ -68,7 +28,7 @@ class HomePage extends StatelessWidget {
                     Spacer(), // Adds a spacer to push the logout button to the end
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF254c1f),
+                        backgroundColor: kDashboardTextColor,
                       ),
                       onPressed: () {
                         showDialog(
@@ -130,7 +90,7 @@ class HomePage extends StatelessWidget {
                 style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF254c1f)),
+                    color: kDashboardTextColor),
               ),
             ),
             Divider(
@@ -143,7 +103,7 @@ class HomePage extends StatelessWidget {
             SizedBox(height: 30, width: 0),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF41aa5f),
+                backgroundColor: kButtonBgColor,
                 padding: EdgeInsets.symmetric(horizontal: 40, vertical: 50),
               ),
               onPressed: () {
@@ -160,7 +120,7 @@ class HomePage extends StatelessWidget {
             SizedBox(height: 30),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF41aa5f),
+                backgroundColor: kButtonBgColor,
                 padding: EdgeInsets.symmetric(horizontal: 40, vertical: 50),
               ),
               onPressed: () {},

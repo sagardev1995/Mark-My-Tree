@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:intl/intl.dart';
 import 'package:my_first_app/app_style.dart';
+import 'package:my_first_app/widgets/custom_appbar.dart';
 
 class PendingApps extends StatefulWidget {
   @override
@@ -66,52 +67,7 @@ class _PendingAppsState extends State<PendingApps> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: const Color(0xFF41aa5f),
-        toolbarHeight: 100,
-        title: Row(
-          children: [
-            Image.asset(
-              'assets/images/appbar-img-modified.png',
-              width: 50,
-              height: 70,
-            ),
-            const SizedBox(width: 12),
-            SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: const Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Text(
-                        '           अंकन आदेश आवेदन पोर्टल',
-                        style: TextStyle(fontSize: 17),
-                      ),
-                    ),
-                    SizedBox(height: 2),
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        '   MARKING ORDER APPLICATION',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(width: 8),
-            Image.asset(
-              'assets/images/login-img.png',
-              width: 60,
-              height: 60,
-            ),
-          ],
-        ),
-      ),
+      appBar: CustomAppBar(),
       body: FutureBuilder<List<ApplicationData>>(
         future: fetchData(),
         builder: (context, snapshot) {
@@ -160,12 +116,12 @@ class _PendingAppsState extends State<PendingApps> {
                                       onPressed: () {
                                         // Handle verify button pressed
                                       },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: kPrimaryColorLight,
+                                      ),
                                       child: Text(
                                         'Verify',
                                         style: TextStyle(color: kTextColor),
-                                      ),
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Color(0xFF0AA034),
                                       ),
                                     ),
                                   ],
