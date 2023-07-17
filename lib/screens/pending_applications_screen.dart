@@ -4,39 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:developer';
-import 'package:intl/intl.dart';
 import 'package:my_first_app/app_style.dart';
 import 'package:my_first_app/widgets/custom_appbar.dart';
+import 'package:my_first_app/models/applicationDatadart';
 
 class PendingApps extends StatefulWidget {
   @override
   _PendingAppsState createState() => _PendingAppsState();
-}
-
-class ApplicationData {
-  final int id;
-  final String name;
-  final DateTime date;
-  final String pendingWith;
-  ApplicationData({
-    required this.id,
-    required this.name,
-    required this.date,
-    required this.pendingWith,
-  });
-  String get formattedDate {
-    final formatter = DateFormat('dd MMM yyyy');
-    return formatter.format(date);
-  }
-
-  factory ApplicationData.fromJson(Map<String, dynamic> json) {
-    return ApplicationData(
-      id: json['applicationId'] ?? '',
-      name: json['applicantFirstName'] ?? '',
-      date: DateTime.parse(json['applicationDate'] ?? ''),
-      pendingWith: json['assignedTo'] ?? '',
-    );
-  }
 }
 
 class _PendingAppsState extends State<PendingApps> {
@@ -101,10 +75,10 @@ class _PendingAppsState extends State<PendingApps> {
                           (data) {
                             return DataRow(
                               cells: [
-                                DataCell(Text(data.id.toString())),
-                                DataCell(Text(data.name)),
+                                DataCell(Text(data.applicationId.toString())),
+                                DataCell(Text(data.applicantFirstName)),
                                 DataCell(Text(data.formattedDate)),
-                                DataCell(Text(data.pendingWith)),
+                                DataCell(Text(data.assignedTo)),
                                 DataCell(Row(
                                   children: [
                                     ElevatedButton(
