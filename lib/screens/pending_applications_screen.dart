@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:developer';
 import 'package:my_first_app/app_style.dart';
+import 'package:my_first_app/screens/view_application_screen.dart';
 import 'package:my_first_app/widgets/custom_appbar.dart';
 import 'package:my_first_app/models/applicationDatadart';
 
@@ -60,50 +61,64 @@ class _PendingAppsState extends State<PendingApps> {
                   ),
                 ),
                 Expanded(
-                  child: SafeArea(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: DataTable(
-                        columns: const [
-                          DataColumn(label: Text('ID')),
-                          DataColumn(label: Text('NAME')),
-                          DataColumn(label: Text('DATE')),
-                          DataColumn(label: Text('PENDING WITH')),
-                          DataColumn(label: Text('ACTION')),
-                        ],
-                        rows: applicationData.map(
-                          (data) {
-                            return DataRow(
-                              cells: [
-                                DataCell(Text(data.applicationId.toString())),
-                                DataCell(Text(data.applicantFirstName)),
-                                DataCell(Text(data.formattedDate)),
-                                DataCell(Text(data.assignedTo)),
-                                DataCell(Row(
-                                  children: [
-                                    ElevatedButton(
-                                      onPressed: () {},
-                                      child: Text('View'),
-                                    ),
-                                    SizedBox(width: 10),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        // Handle verify button pressed
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: kPrimaryColorLight,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Container(
+                      constraints: BoxConstraints(
+                          maxHeight:
+                              500), // Adjust the maxHeight value as needed
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: DataTable(
+                          columns: const [
+                            DataColumn(label: Text('ID')),
+                            DataColumn(label: Text('NAME')),
+                            DataColumn(label: Text('DATE')),
+                            DataColumn(label: Text('PENDING WITH')),
+                            DataColumn(label: Text('ACTION')),
+                          ],
+                          rows: applicationData.map(
+                            (data) {
+                              return DataRow(
+                                cells: [
+                                  DataCell(Text(data.applicationId.toString())),
+                                  DataCell(Text(data.applicantFirstName)),
+                                  DataCell(Text(data.formattedDate)),
+                                  DataCell(Text(data.assignedTo)),
+                                  DataCell(Row(
+                                    children: [
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ApplicationDetailsScreen(
+                                                        applicationData: data,
+                                                      )));
+                                        },
+                                        child: Text('View'),
                                       ),
-                                      child: Text(
-                                        'Verify',
-                                        style: TextStyle(color: kTextColor),
+                                      SizedBox(width: 10),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          // Handle verify button pressed
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: kPrimaryColorLight,
+                                        ),
+                                        child: Text(
+                                          'Verify',
+                                          style: TextStyle(color: kTextColor),
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                )),
-                              ],
-                            );
-                          },
-                        ).toList(),
+                                    ],
+                                  )),
+                                ],
+                              );
+                            },
+                          ).toList(),
+                        ),
                       ),
                     ),
                   ),
