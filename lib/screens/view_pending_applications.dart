@@ -5,9 +5,10 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:developer';
 import 'package:my_first_app/app_style.dart';
-import 'package:my_first_app/screens/view_application_screen.dart';
+import 'package:my_first_app/screens/view_application_details_screen.dart';
 import 'package:my_first_app/widgets/custom_appbar.dart';
-import 'package:my_first_app/models/applicationDatadart';
+import 'package:my_first_app/models/applicationData.dart';
+import 'package:my_first_app/screens/pending_applications.dart';
 
 class PendingApps extends StatefulWidget {
   @override
@@ -102,7 +103,11 @@ class _PendingAppsState extends State<PendingApps> {
                                       SizedBox(width: 10),
                                       ElevatedButton(
                                         onPressed: () {
-                                          // Handle verify button pressed
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      PendingApplication()));
                                         },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: kPrimaryColorLight,

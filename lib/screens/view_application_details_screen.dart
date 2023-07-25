@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:my_first_app/models/applicationDatadart';
+import 'package:my_first_app/models/applicationData.dart';
 import 'package:my_first_app/widgets/custom_appbar.dart';
 import 'package:my_first_app/app_style.dart';
 
 class ApplicationDetailsScreen extends StatelessWidget {
   final ApplicationData applicationData;
 
-  const ApplicationDetailsScreen({required this.applicationData});
+  const ApplicationDetailsScreen({super.key, required this.applicationData});
 
   @override
   Widget build(BuildContext context) {

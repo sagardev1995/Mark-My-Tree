@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_first_app/app_style.dart';
 import 'login_screen.dart';
-import 'pending_applications_screen.dart';
+import 'view_pending_applications.dart';
 import 'package:my_first_app/widgets/custom_appbar.dart';
 
 class HomePage extends StatelessWidget {
