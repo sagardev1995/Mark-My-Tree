@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:my_first_app/models/verification_tree.dart';
 import 'package:my_first_app/models/rule_6.dart';
+import 'package:my_first_app/screens/verification_part2_screen.dart';
 import 'package:my_first_app/widgets/custom_appbar.dart';
 
 class PendingApplication extends StatefulWidget {
@@ -439,7 +440,11 @@ class _PendingApplicationState extends State<PendingApplication> {
       persistentFooterButtons: [
         ElevatedButton(
           onPressed: () {
-            // _handleFileUpload();
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        VerificationPart2()));
           },
           child: Text('GO NEXT'),
         ),
