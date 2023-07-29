@@ -24,7 +24,6 @@ class _PendingAppsState extends State<PendingApps> {
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
         if (jsonData['Application'] is List) {
-          log("Hello");
           List<dynamic> applicationList = jsonData['Application'];
           List<ApplicationData> data = applicationList.map((item) {
             return ApplicationData.fromJson(item);
