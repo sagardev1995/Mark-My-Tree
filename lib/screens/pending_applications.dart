@@ -9,6 +9,43 @@ import 'package:my_first_app/models/rule_6.dart';
 import 'package:my_first_app/screens/verification_part2_screen.dart';
 import 'package:my_first_app/widgets/custom_appbar.dart';
 
+class  TreeDataList{
+  final int treeId;
+  final String girth;
+  final String  photo;
+  final bool posingThreat;
+  final bool actionForApproval;
+  final String xGpsCoordinate;
+  final String yGpsCoordinate;
+  TreeDataList({required this.treeId,required this.girth, required this.photo, required this.posingThreat,required this.actionForApproval,required this.xGpsCoordinate,required this.yGpsCoordinate});
+  Map<String, dynamic> toJson() {
+    return {
+      "treeId": treeId,
+      "girth": girth,
+      "photo": photo,
+      "posingThreat": posingThreat,
+      "actionForApproval": actionForApproval,
+      "xGpsCoordinate": xGpsCoordinate,
+      "yGpsCoordinate": yGpsCoordinate,
+    };
+  }
+    List<dynamic> toJsonList() {
+    return [
+    treeId,
+    girth,
+    photo,
+    posingThreat,
+    actionForApproval,
+    xGpsCoordinate,
+    yGpsCoordinate,
+    ];
+    }
+    }
+
+
+
+
+
 class PendingApplication extends StatefulWidget {
   PendingApplication();
 
@@ -17,6 +54,65 @@ class PendingApplication extends StatefulWidget {
 }
 
 class _PendingApplicationState extends State<PendingApplication> {
+
+  late TreeDataList datalist = TreeDataList(
+    treeId: 0,
+    girth: '',
+    photo: '',
+    posingThreat: false,
+    actionForApproval: false,
+    xGpsCoordinate: '',
+    yGpsCoordinate: '',
+  );
+  late String sendPlotNo = "";
+   late int sendApplicationId = 0;
+
+
+  Future<void> sendPostRequestToAPI(TreeDataList datalist,String plotNo,int applicationId,List <String> selectedRule6Ids) async {
+    print(datalist.toJsonList());
+    var DataToBeSent = {
+      "plotNo": plotNo.toString(),
+     //  "rule6Ids": selectedRule6Ids.toString(),
+      "applicationId" : applicationId.toString(),
+      "treeDataList": [datalist.toJsonList()],
+    };
+
+    try {
+      var apiUrl = Uri.parse("https://markmytree.nic.in/api/verificationPlot");
+      var response = await http.post(apiUrl, body: DataToBeSent);
+
+      if (response.statusCode == 200) {
+        print("POST request successful!");
+        print("Response: ${response.body}");
+        _showSuccessDialog();
+      } else {
+
+        print("POST request failed. Error: ${response.statusCode}");
+      }
+    } catch (e) {
+      print("Exception: $e");
+    }
+  }
+
+  void _showSuccessDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Success"),
+          content: Text("Submitted successfully!"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
   String _temporaryXGpsCoordinate = '';
   String _temporaryYGpsCoordinate = '';
   late List<Rule6> rule6List = [];
@@ -32,9 +128,6 @@ class _PendingApplicationState extends State<PendingApplication> {
   void initState() {
     super.initState();
     getVerificationTreeDetails();
-    // rule6List = widget.rule6List;
-    print('here');
-
     fellingTreeConditions();
   }
 
@@ -421,8 +514,18 @@ class _PendingApplicationState extends State<PendingApplication> {
                                 DataCell(ElevatedButton(
                                   child: Text("Save"),
                                   onPressed: () {
-                                    // verificationTreeList[];
-                                  },
+                                    datalist = TreeDataList(
+                                      treeId: tree.treeId,
+                                      girth: tree.girth,
+                                      photo: tree.photo,
+                                      posingThreat: tree.posingThreat,
+                                      actionForApproval: tree.actionForApproval,
+                                      xGpsCoordinate: _temporaryXGpsCoordinate,
+                                      yGpsCoordinate: _temporaryYGpsCoordinate,
+                                    );
+                                    sendPlotNo = tree.plotNo;
+                                    sendApplicationId = 0;
+                                    },
                                 )),
                               ],
                             );
@@ -450,12 +553,12 @@ class _PendingApplicationState extends State<PendingApplication> {
         ),
         ElevatedButton(
           onPressed: (selectedRule6Ids.isNotEmpty ||
-                  verificationTreeList!.every(
-                      (tree) => tree.photo != null && tree.photo!.isNotEmpty))
+              verificationTreeList.every((tree) => tree.photo != null && tree.photo.isNotEmpty))
               ? () {
-                  // Handle SUBMIT button press
-                  // Only proceed if there are selectedRule6Ids
-                }
+            sendPostRequestToAPI(datalist,sendPlotNo,sendApplicationId,selectedRule6Ids);
+            // Handle SUBMIT button press
+            // Only proceed if there are selectedRule6Ids
+          }
               : null,
           child: Text('SUBMIT'),
         ),
