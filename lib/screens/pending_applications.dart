@@ -3,21 +3,31 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:my_first_app/models/verification_tree.dart';
 import 'package:my_first_app/models/rule_6.dart';
 import 'package:my_first_app/screens/verification_part2_screen.dart';
 import 'package:my_first_app/widgets/custom_appbar.dart';
 
-class  TreeDataList{
+class TreeData {
   final int treeId;
   final String girth;
-  final String  photo;
+  final String photo;
   final bool posingThreat;
   final bool actionForApproval;
-  final String xGpsCoordinate;
-  final String yGpsCoordinate;
-  TreeDataList({required this.treeId,required this.girth, required this.photo, required this.posingThreat,required this.actionForApproval,required this.xGpsCoordinate,required this.yGpsCoordinate});
+  final double xGpsCoordinate;
+  final double yGpsCoordinate;
+
+  TreeData(
+      {required this.treeId,
+      required this.girth,
+      required this.photo,
+      required this.posingThreat,
+      required this.actionForApproval,
+      required this.xGpsCoordinate,
+      required this.yGpsCoordinate});
+
   Map<String, dynamic> toJson() {
     return {
       "treeId": treeId,
@@ -29,22 +39,19 @@ class  TreeDataList{
       "yGpsCoordinate": yGpsCoordinate,
     };
   }
-    List<dynamic> toJsonList() {
+
+  List<dynamic> toJsonList() {
     return [
-    treeId,
-    girth,
-    photo,
-    posingThreat,
-    actionForApproval,
-    xGpsCoordinate,
-    yGpsCoordinate,
+      treeId,
+      girth,
+      photo,
+      posingThreat,
+      actionForApproval,
+      xGpsCoordinate,
+      yGpsCoordinate,
     ];
-    }
-    }
-
-
-
-
+  }
+}
 
 class PendingApplication extends StatefulWidget {
   PendingApplication();
@@ -55,26 +62,18 @@ class PendingApplication extends StatefulWidget {
 
 class _PendingApplicationState extends State<PendingApplication> {
 
-  late TreeDataList datalist = TreeDataList(
-    treeId: 0,
-    girth: '',
-    photo: '',
-    posingThreat: false,
-    actionForApproval: false,
-    xGpsCoordinate: '',
-    yGpsCoordinate: '',
-  );
   late String sendPlotNo = "";
-   late int sendApplicationId = 0;
+  late int sendApplicationId = 0;
 
-
-  Future<void> sendPostRequestToAPI(TreeDataList datalist,String plotNo,int applicationId,List <String> selectedRule6Ids) async {
-    print(datalist.toJsonList());
+  Future<void> sendPostRequestToAPI(String plotNo,
+      int applicationId, List<String> selectedRule6Ids) async {
+    var jsonList= verificationTreeList.map((treeData) => treeData.toJson()).toList();
+    print(jsonList);
     var DataToBeSent = {
       "plotNo": plotNo.toString(),
-     //  "rule6Ids": selectedRule6Ids.toString(),
-      "applicationId" : applicationId.toString(),
-      "treeDataList": [datalist.toJsonList()],
+      //  "rule6Ids": selectedRule6Ids.toString(),
+      "applicationId": applicationId.toString(),
+      "TreeData": jsonList,
     };
 
     try {
@@ -86,7 +85,6 @@ class _PendingApplicationState extends State<PendingApplication> {
         print("Response: ${response.body}");
         _showSuccessDialog();
       } else {
-
         print("POST request failed. Error: ${response.statusCode}");
       }
     } catch (e) {
@@ -113,12 +111,14 @@ class _PendingApplicationState extends State<PendingApplication> {
       },
     );
   }
+
   String _temporaryXGpsCoordinate = '';
   String _temporaryYGpsCoordinate = '';
   late List<Rule6> rule6List = [];
   String applicationNo = '809087892';
   String plotNo = '283"23"';
   List<String> selectedRule6Ids = [];
+
   //I've used this model to fetch verification tree list as table row data
   late List<VerificationTree> verificationTreeList = [];
   List<String> _dropDownValues = ["Yes", "No"];
@@ -428,7 +428,8 @@ class _PendingApplicationState extends State<PendingApplication> {
                             ),
                           ],
                           rows: verificationTreeList.map((tree) {
-                            VerificationTree _tree = tree;
+                           late VerificationTree _tree = tree;
+
                             return DataRow(
                               cells: <DataCell>[
                                 DataCell(Text('${tree.treeSpeciesLocalName}')),
@@ -446,7 +447,7 @@ class _PendingApplicationState extends State<PendingApplication> {
                                     }).toList(),
                                     onChanged: (bool? newValue) {
                                       setState(() {
-                                        _tree.posingThreat != newValue;
+                                        _tree.posingThreat= _tree.posingThreat==true?false:true;
                                       });
                                     },
                                     validator: (value) {
@@ -477,7 +478,7 @@ class _PendingApplicationState extends State<PendingApplication> {
                                     }).toList(),
                                     onChanged: (bool? newValue) {
                                       setState(() {
-                                        _tree.actionForApproval != newValue;
+                                        _tree.actionForApproval = _tree.actionForApproval==true?false:true;
                                       });
                                     },
                                     validator: (value) {
@@ -491,42 +492,41 @@ class _PendingApplicationState extends State<PendingApplication> {
                                 DataCell(
                                   TextFormField(
                                     initialValue: '${tree.xGpsCoordinate}',
+                                    keyboardType: TextInputType.numberWithOptions(decimal: true),
+                                    inputFormatters: <TextInputFormatter>[
+                                      FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
+                                    ],
                                     onChanged: (value) {
                                       setState(() {
                                         // Update the temporary xGpsCoordinate variable when the user enters text
-                                        _temporaryXGpsCoordinate = value;
+                                        _tree.xGpsCoordinate =double.parse(value) ;
                                       });
                                     },
                                   ),
                                 ),
                                 DataCell(
                                   TextFormField(
+                                    keyboardType: TextInputType.numberWithOptions(decimal: true),
+                                    inputFormatters: <TextInputFormatter>[
+                                      FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
+                                    ],
                                     initialValue: '${tree.yGpsCoordinate}',
                                     onChanged: (value) {
                                       setState(() {
                                         // Update the temporary yGpsCoordinate variable when the user enters text
-                                        _temporaryYGpsCoordinate = value;
+                                        _tree.yGpsCoordinate = double.parse(value);
                                       });
                                     },
                                   ),
                                 ),
                                 DataCell(Text('${tree.plotNo}')),
                                 DataCell(ElevatedButton(
-                                  child: Text("Save"),
-                                  onPressed: () {
-                                    datalist = TreeDataList(
-                                      treeId: tree.treeId,
-                                      girth: tree.girth,
-                                      photo: tree.photo,
-                                      posingThreat: tree.posingThreat,
-                                      actionForApproval: tree.actionForApproval,
-                                      xGpsCoordinate: _temporaryXGpsCoordinate,
-                                      yGpsCoordinate: _temporaryYGpsCoordinate,
-                                    );
-                                    sendPlotNo = tree.plotNo;
-                                    sendApplicationId = 0;
-                                    },
-                                )),
+                                    child: Text("Save"),
+                                    onPressed: () {
+                                      verificationTreeList.removeWhere((element) => element.treeId==_tree.treeId);
+                                      verificationTreeList.add(_tree);
+
+                                    })),
                               ],
                             );
                           }).toList(),
@@ -543,22 +543,21 @@ class _PendingApplicationState extends State<PendingApplication> {
       persistentFooterButtons: [
         ElevatedButton(
           onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        VerificationPart2()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => VerificationPart2()));
           },
           child: Text('GO NEXT'),
         ),
         ElevatedButton(
           onPressed: (selectedRule6Ids.isNotEmpty ||
-              verificationTreeList.every((tree) => tree.photo != null && tree.photo.isNotEmpty))
+                  verificationTreeList.every(
+                      (tree) => tree.photo != null && tree.photo.isNotEmpty))
               ? () {
-            sendPostRequestToAPI(datalist,sendPlotNo,sendApplicationId,selectedRule6Ids);
-            // Handle SUBMIT button press
-            // Only proceed if there are selectedRule6Ids
-          }
+                  sendPostRequestToAPI(sendPlotNo, sendApplicationId,
+                      selectedRule6Ids);
+                  // Handle SUBMIT button press
+                  // Only proceed if there are selectedRule6Ids
+                }
               : null,
           child: Text('SUBMIT'),
         ),

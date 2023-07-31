@@ -3,12 +3,12 @@ import 'dart:convert';
 
 class VerificationTree {
   final int treeId;
-  final bool posingThreat;
+  bool posingThreat;
   String photo;
   final String girth;
-  final bool actionForApproval;
-  final double xGpsCoordinate;
-  final double yGpsCoordinate;
+  bool actionForApproval;
+  double xGpsCoordinate;
+  double yGpsCoordinate;
   final String treeSpeciesLocalName;
   final String plotNo;
   // final int verificationPlotId;
@@ -25,6 +25,21 @@ class VerificationTree {
     // required this.verificationPlotId,
     required this.plotNo,
   });
+  Map<String, dynamic> toJson() {
+    return {
+      'treeId': treeId,
+      'posingThreat': posingThreat,
+      'photo': photo,
+      'girth': girth,
+      'actionForApproval': actionForApproval,
+      'xGpsCoordinate': xGpsCoordinate,
+      'yGpsCoordinate': yGpsCoordinate,
+      'treeSpeciesLocalName': treeSpeciesLocalName,
+      'plotNo': plotNo,
+    };
+  }
+
+
 
   factory VerificationTree.fromJson(Map<String, dynamic> json) {
     return VerificationTree(
